@@ -25,12 +25,12 @@ namespace InvestementsTracker.Services.InPzu
 
         public async Task<IEnumerable<InPzuPortfolio>> ScrapePortfolios(IPage page)
         {
-            var credentials = _config.GetSection("Credentials:inpzu");
-            var login = credentials["login"];
-            var password = credentials["password"];
-            var latestOrders = (await (await new InPzuLogin(page)
-                .Login(login, password))
-                .GoToOrders()).History.Entries;
+            var latestOrders =
+                (await
+                (await Login(page))
+                .GoToOrders())
+                .History!
+                .Entries;
             var inPzuPortfolios = new List<InPzuPortfolio>();
             foreach (var order in latestOrders.Where(x => x.nazwa.Trim().Equals("KUPNO (nabycie)", StringComparison.OrdinalIgnoreCase)))
             {
@@ -50,12 +50,12 @@ namespace InvestementsTracker.Services.InPzu
 
         public async Task<IEnumerable<InPzuOrder>> GetOrders(IPage page)
         {
-            var credentials = _config.GetSection("Credentials:inpzu");
-            var login = credentials["login"];
-            var password = credentials["password"];
-            var latestOrders = (await (await new InPzuLogin(page)
-                .Login(login, password))
-                .GoToOrders()).History.Entries;
+            var latestOrders =
+                (await
+                (await Login(page))
+                .GoToOrders())
+                .History!
+                .Entries;
             var inPzuOrders = new List<InPzuOrder>();
             foreach (var order in latestOrders.Where(x => x.nazwa.Trim().Contains("(nabycie)", StringComparison.OrdinalIgnoreCase)))
             {
@@ -127,29 +127,38 @@ namespace InvestementsTracker.Services.InPzu
             await _dataContext.InPzuResults.AddRangeAsync(results.Except(existingResults));
             await _dataContext.SaveChangesAsync();
 
-            var ret = orders.SelectMany(x => x.Positions).Select(x => new
-            {
-                Register = x.FundName,
-                Purchase = x.PurchaseValue.ToString("n") + Space + x.Currency,
-                PurchasedOn = x.PurchaseDate,
-                Result = x.Results.Select(r => new
+            var ret = orders
+                .SelectMany(x => x.Positions)
+                .Select(x => new
                 {
-                    r.Value,
-                    r.Percentile
-                }).First(),
-            }).GroupBy(x => x.Register).Select(x => new { Register = x.Key, Positions = x.Select(p => new { p.Purchase, p.PurchasedOn, p.Result }) });
+                    Register = x.FundName,
+                    Purchase = x.PurchaseValue.ToString("n") + Space + x.Currency,
+                    PurchasedOn = x.PurchaseDate,
+                    Result = x.Results.Select(r => new
+                    {
+                        r.Value,
+                        r.Percentile
+                    }).First(),
+                })
+                .GroupBy(x => x.Register)
+                .Select(x => new { Register = x.Key, Positions = x.Select(p => new { p.Purchase, p.PurchasedOn, p.Result }) });
             return new { PricingDate = pricingDate, Results = ret };
         }
 
         public async Task<AccountResults> ScrapeAccount(IPage page)
         {
+            await Login(page);
+            var results = await (new InPzuProductsPage(page)).GoTo();
+            return results;
+        }
+
+        private Task<InPzuMainPage> Login(IPage page)
+        {
             var credentials = _config.GetSection("Credentials:inpzu");
             var login = credentials["login"];
             var password = credentials["password"];
-            await new InPzuLogin(page)
+            return new InPzuLogin(page)
                 .Login(login, password);
-            var results = await (new InPzuProductsPage(page)).GoTo();
-            return results;
         }
     }
 }

@@ -10,12 +10,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EC5E910A-DE31-4BD2-A4FE-8E7C05FD8A6D}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
-		Dockerfile = Dockerfile
+		InvestementsTracker\Dockerfile = InvestementsTracker\Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InPzuDatabase", "InPzuDatabase\InPzuDatabase.csproj", "{917315F4-3EA4-4C04-8931-2389742B7058}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InPzuDatabase", "InPzuDatabase\InPzuDatabase.csproj", "{917315F4-3EA4-4C04-8931-2389742B7058}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Support", "Support\Support.csproj", "{D86CBD57-7826-4D78-92C9-353EAC32AFF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Support", "Support\Support.csproj", "{D86CBD57-7826-4D78-92C9-353EAC32AFF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

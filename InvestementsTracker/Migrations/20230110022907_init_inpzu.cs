@@ -6,8 +6,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace InvestementsTracker.Migrations
 {
-    public partial class init_inpzu : Migration
+    /// <inheritdoc />
+    public partial class initinpzu : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -125,6 +127,7 @@ namespace InvestementsTracker.Migrations
                 column: "PositionId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

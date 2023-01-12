@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InvestementsTracker.Controllers;
 
     [ApiController, Route("pricings")]
-    public class PricingsController : InPzuController
+    public class PricingsController : InPzuControllerBase
     {
     public PricingsController(IInPzuScrapingService inpPzuScrapingService, IInPzuRepository inpzuRepository, IMapper mapper, InPzuDataContext dataContext) : base(inpPzuScrapingService, inpzuRepository, mapper, dataContext)
     {

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace InvestementsTracker.Controllers;
 
 [ApiController, Route("results")]
-public class ResultsController : InPzuController
+public class ResultsController : InPzuControllerBase
 {
     public ResultsController(IInPzuScrapingService inpPzuScrapingService, IInPzuRepository inpzuRepository, IMapper mapper, InPzuDataContext dataContext) : base(inpPzuScrapingService, inpzuRepository, mapper, dataContext)
     {

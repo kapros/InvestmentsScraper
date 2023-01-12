@@ -9,7 +9,7 @@ using Microsoft.Playwright;
 namespace InvestementsTracker.Controllers;
 
 [ApiController, Route("portfolio")]
-public class PortfolioController : InPzuController
+public class PortfolioController : InPzuControllerBase
 {
     public PortfolioController(IInPzuScrapingService inpPzuScrapingService, IInPzuRepository inpzuRepository, IMapper mapper, InPzuDataContext dataContext) : base(inpPzuScrapingService, inpzuRepository, mapper, dataContext)
     {

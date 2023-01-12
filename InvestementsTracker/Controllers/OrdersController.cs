@@ -9,7 +9,7 @@ using Microsoft.Playwright;
 namespace InvestementsTracker.Controllers;
 
 [ApiController, Route("orders")]
-public class OrdersController : InPzuController
+public class OrdersController : InPzuControllerBase
 {
     public OrdersController(IInPzuScrapingService inpPzuScrapingService, IInPzuRepository inpzuRepository, IMapper mapper, InPzuDataContext dataContext) : base(inpPzuScrapingService, inpzuRepository, mapper, dataContext)
     {

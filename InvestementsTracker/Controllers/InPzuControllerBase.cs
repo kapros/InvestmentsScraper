@@ -8,7 +8,7 @@ using Microsoft.Playwright;
 
 namespace InvestementsTracker.Controllers;
 
-public class InPzuController : ControllerBase
+public class InPzuControllerBase : ControllerBase
 {
     protected readonly InPzuDataContext DataContext;
     protected readonly IPage Page;
@@ -16,7 +16,7 @@ public class InPzuController : ControllerBase
     protected readonly IInPzuRepository InpzuRepository;
     protected readonly IMapper Mapper;
 
-    public InPzuController(IInPzuScrapingService inpPzuScrapingService, IInPzuRepository inpzuRepository, IMapper mapper, InPzuDataContext dataContext)
+    public InPzuControllerBase(IInPzuScrapingService inpPzuScrapingService, IInPzuRepository inpzuRepository, IMapper mapper, InPzuDataContext dataContext)
     {
         var headless = false;
         DataContext = dataContext;

@@ -5,7 +5,7 @@ using InvestementsTracker.InPzuScraper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Playwright;
 using System.Globalization;
-using static InvestementsTracker.Controllers.InPzuController;
+using static InvestementsTracker.Controllers.InPzuControllerBase;
 using static InvestementsTracker.Helpers;
 
 namespace InvestementsTracker.Services.InPzu
@@ -129,19 +129,28 @@ namespace InvestementsTracker.Services.InPzu
 
             var ret = orders
                 .SelectMany(x => x.Positions)
+                .GroupBy(x => x.RegistrationId)
                 .Select(x => new
                 {
-                    Register = x.FundName,
-                    Purchase = x.PurchaseValue.ToString("n") + Space + x.Currency,
-                    PurchasedOn = x.PurchaseDate,
-                    Result = x.Results.Select(r => new
-                    {
-                        r.Value,
-                        r.Percentile
-                    }).First(),
-                })
-                .GroupBy(x => x.Register)
-                .Select(x => new { Register = x.Key, Positions = x.Select(p => new { p.Purchase, p.PurchasedOn, p.Result }) });
+                    Registry = x.Key,
+                    Results = x.Select(y => y)
+                                .GroupBy(y => y.FundName)
+                                .Select(
+                        y => new
+                        {
+                            Fund = y.Key,
+                            Results = y.Select(z => new
+                            {
+                                Purchase = z.PurchaseValue.ToString("n") + Space + z.Currency,
+                                PurchasedOn = z.PurchaseDate,
+                                Result = z.Results.Select(r => new
+                                {
+                                    r.Value,
+                                    r.Percentile
+                                }).First()
+                            })
+                        })
+                });
             return new { PricingDate = pricingDate, Results = ret };
         }
 

@@ -3,8 +3,6 @@ using InvestementsTracker.InPzuDatabase;
 using InvestementsTracker.Responses;
 using InvestementsTracker.Services.InPzu;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Playwright;
 
 namespace InvestementsTracker.Controllers;
 
@@ -35,5 +33,12 @@ public class PortfolioController : InPzuControllerBase
             var results = Mapper.Map<ListPortfoliosResponse>(portfolios);
             return Ok(results);
         });
+    }
+
+    [HttpPost("{id}/name")]
+    public async Task<IActionResult> RenamePortfolio([FromRoute]long id, [FromBody]string name)
+    {
+        InpzuRepository.RenamePortfolio(id, name);
+        return Ok();
     }
 }

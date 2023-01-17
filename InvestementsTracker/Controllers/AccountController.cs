@@ -23,14 +23,16 @@ public class AccountController : InPzuControllerBase
                 {
                     Purchases = account.wplaty,
                     CurrentValue = account.wartosc,
-                    Change = account.wynik
+                    Change = account.wynik,
+                    PercentageChange = double.Round((account.wynik / account.wplaty) * 100, 2)
                 },
                 Funds = account.produkty.First().umowy.Select(x => new
                 {
                     Registry = x.rejestrId,
                     RegistryPurchases = x.wplaty,
                     RegistryValue = x.wartosc,
-                    RegistryChange = x.wynik
+                    RegistryChange = x.wynik,
+                    RegistryPercentageChange = double.Round((x.wynik / x.wplaty) * 100, 2)
                 })
             };
             return Ok(resp);

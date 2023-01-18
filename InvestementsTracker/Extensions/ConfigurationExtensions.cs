@@ -41,4 +41,12 @@ public static class ConfigurationExtensions
         services.AddScoped<IInPzuRepository, InPzuRepository>();
         return services;
     }
+
+    public static void AddResponseHeaderChanges(this WebApplication app)
+    {
+        app.Use(async (context, next) => {
+            context.Response.Headers.Add("nonce", DateTime.UtcNow.ToString("yyyyyMMddHHmm"));
+            await next().ConfigureAwait(false);
+        });
+    }
 }

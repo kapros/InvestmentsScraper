@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InvestementsTracker.Converters;
 using InvestementsTracker.InPzuDatabase;
+using InvestementsTracker.Services;
 using InvestementsTracker.Services.InPzu;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,12 +28,20 @@ public static class ConfigurationExtensions
             .EnableSensitiveDataLogging(configuration.GetValue<bool>("pg:EnableSensitiveDataLogging")));
         return services;
     }
+
     public static IMvcBuilder AddJsonConverters(this IMvcBuilder builder)
     {
         return builder.AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
         });
+    }
+
+    public static WebApplicationBuilder AddCommonServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton(new DateFormatter());
+        builder.Services.AddSingleton(new JokeService());
+        return builder;
     }
 
     public static IServiceCollection AddInPzuServices(this IServiceCollection services)
@@ -44,8 +53,10 @@ public static class ConfigurationExtensions
 
     public static void AddResponseHeaderChanges(this WebApplication app)
     {
+        var jokeService = app.Services.GetService<JokeService>();
+
         app.Use(async (context, next) => {
-            context.Response.Headers.Add("nonce", DateTime.UtcNow.ToString("yyyyyMMddHHmm"));
+            context.Response.Headers.Add("joke", jokeService.GetJoke());
             await next().ConfigureAwait(false);
         });
     }

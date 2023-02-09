@@ -1,5 +1,4 @@
 using InvestementsTracker.Extensions;
-using InvestementsTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

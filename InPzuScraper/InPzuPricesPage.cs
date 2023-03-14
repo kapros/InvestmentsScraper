@@ -51,7 +51,7 @@ namespace InvestementsTracker.InPzuScraper
                 {
                     await _page.SelectOptionAsync("select.fund_filter[data-filter-attr='unit_category']", new SelectOptionValue { Value = category.Code }, new PageSelectOptionOptions { Force = true });
                 }
-                , x => x.Url.Contains("component.id=2943892") && x.Request.Method == "POST");
+                , x => x.Url.Contains("component.id=") && x.Request.Method == "POST");
                 var json = await response.TextAsync();
                 quotes[category.UnitType] = json;
             }

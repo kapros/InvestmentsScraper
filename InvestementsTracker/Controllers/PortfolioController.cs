@@ -38,7 +38,7 @@ public class PortfolioController : InPzuControllerBase
     [HttpPost("{id}/name")]
     public async Task<IActionResult> RenamePortfolio([FromRoute]long id, [FromBody]string name)
     {
-        InpzuRepository.RenamePortfolio(id, name);
+        await InpzuRepository.RenamePortfolio(id, name);
         return Ok();
     }
 }

@@ -93,11 +93,11 @@ namespace InPzuScraper
     public class AccountResults
     {
         public List<Produkty> produkty { get; set; }
-        public int wplaty { get; set; }
-        public int wyplaty { get; set; }
+        public double wplaty { get; set; }
+        public double wyplaty { get; set; }
         public double wartosc { get; set; }
         public double wynik { get; set; }
-        public int sumaOstWplat { get; set; }
+        public double sumaOstWplat { get; set; }
         public bool uzupelnioneDane { get; set; }
         public bool zweryfikowany { get; set; }
         public bool wymaganaWeryfikacja { get; set; }
